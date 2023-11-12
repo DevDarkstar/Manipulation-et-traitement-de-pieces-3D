@@ -14,6 +14,6 @@ Vous pouvez ensuite créer votre module Python en générant tout d'abord un Mak
 
 - Commande pour les systèmes Windows :
 
-`cmake cmake -G "Unix Makefiles" ..`
+`cmake -G "Unix Makefiles" ..`
 
 Puis la commande `make` permet de générer le module Python avec l'extension *.so* pour les systèmes Unix et *.pyd* pour les systèmes Windows. Vous n'avez plus qu'à importer votre module dans votre code Python en utilisant le nom du module qui a été défini dans la macro **PYBIND11_MODULE** du fichier .cpp (premier paramètre).
