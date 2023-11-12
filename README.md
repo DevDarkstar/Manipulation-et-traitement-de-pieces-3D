@@ -1,7 +1,7 @@
 # Manipulation-et-traitement-de-pieces-3D
 
 Le dépôt contient un dossier **exemples** dans lequel se trouve divers fichiers permettant de créer un module Python à partir d'un ou de plusieurs fichiers C++.
-Pour ce faire, vous devez tout d'abord cloner le dépôt de **Pybind11** [Pybind11](https://github.com/pybind/pybind11) avec :
+Pour ce faire, vous devez tout d'abord cloner le dépôt de [Pybind11](https://github.com/pybind/pybind11) avec :
 
 `git clone https ://github.com/pybind/pybind11.git`
 
