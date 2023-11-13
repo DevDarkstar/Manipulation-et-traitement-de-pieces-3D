@@ -10,9 +10,11 @@ Vous pouvez ensuite créer votre module Python en générant tout d'abord un Mak
 
 - Commandes pour les systèmes de type Unix : 
 
-`cmake ..` puis `make` qui permettent de générer le module Python au format *.so* 
+`cmake ..` pour générer le Makefile;
 
-- Commandes pour les systèmes Windows :
+`make` pour générer le module Python au format *.so*; 
+
+- Commande pour les systèmes Windows :
 
 `cmake ..` permet de générer une solution (fichier au format *.sln*) donc nécessite de posséder un logiciel permet d'ouvrir ce type de fichier (**Visual Studio** par exemple).
 
