@@ -2,6 +2,7 @@
 #include <pybind11/stl.h>
 #include <vector>
 #include <iostream>
+#include <stdexcept>
 
 namespace py = pybind11;
 
@@ -19,15 +20,11 @@ int getFacesNumber(const std::vector<std::vector<double>>& data){
 
 float testDivideByNumber(float number){
     float result = 0.0f;
-    try{
-        if(number == 0.0f){
-            throw(number);
-        }
-        else{
-            result = 1.0f/number;
-        }
-    }catch(float n){
-        std::cout << "division par " << n << " impossible" << std::endl;
+    if(number == 0.0f){
+        throw std::runtime_error("Impossible de diviser un nombre par " + std::to_string(number));
+    }
+    else{
+        result = 1.0f/number;
     }
     return result;
 }

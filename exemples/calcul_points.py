@@ -65,8 +65,8 @@ def display_infos(context):
 def test_divide_by_zero(context):
     try:
         count_objects.testDivideByNumber(0.0)
-    except:
-        print("Une erreur s'est produite avec la fonction cpp")
+    except RuntimeError as err:
+        raise err
 
 
 class VIEW3D_OT_count_object(bpy.types.Operator):

@@ -8,12 +8,14 @@ Pour ce faire, vous devez tout d'abord cloner le dépôt de [Pybind11](https://g
 Pybind11 est un module permettant de créer des modules Python à partir de code C++. Veuillez à cloner le dépôt dans le dossier **exemples**, au même niveau que les fichiers sources.
 Vous pouvez ensuite créer votre module Python en générant tout d'abord un Makefile à partir du fichier **CMakeLists.txt** . Il est recommandé de créer un sous-dossier et de générer le Makefile à l'intérieur de ce denier afin de ne pas mélanger les fichiers sources et ceux de compilation.
 
-- Commande pour les systèmes de type Unix : 
+- Commandes pour les systèmes de type Unix : 
 
-`cmake ..`
+`cmake ..` puis `make` qui permettent de générer le module Python au format *.so* 
 
-- Commande pour les systèmes Windows :
+- Commandes pour les systèmes Windows :
 
-`cmake -G "Unix Makefiles" ..`
+`cmake ..` permet de générer une solution (fichier au format *.sln*) donc nécessite de posséder un logiciel permet d'ouvrir ce type de fichier (**Visual Studio** par exemple).
 
-Puis la commande `make` permet de générer le module Python avec l'extension *.so* pour les systèmes Unix et *.pyd* pour les systèmes Windows. Vous n'avez plus qu'à importer votre module dans votre code Python en utilisant le nom du module qui a été défini dans la macro **PYBIND11_MODULE** du fichier .cpp (premier paramètre).
+Ouvrez la solution avec **Visual Studio** et exécutez là. Le module Python sera généré au format *.pyd* et se situera dans le dossier **Debug** de votre dossier de compilation.
+
+Vous n'avez plus qu'à importer votre module dans votre code Python en utilisant le nom du module qui a été défini dans le fichier **CMakeLists.txt** et qui doit correspondre à celui renseigné dans la macro **PYBIND11_MODULE** du fichier .cpp (premier paramètre).
