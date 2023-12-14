@@ -21,7 +21,7 @@ SurfaceMesh::SurfaceMesh(std::vector<std::vector<int>> faces, std::vector<std::v
     }
 
     std::cout << "Nombres de sommets : " << num_vertices(m_surface_mesh) << std::endl;
-	std::cout << "Nombres d'arêtes : " << num_edges(m_surface_mesh) << std::endl;
+    std::cout << "Nombres d'arêtes : " << num_edges(m_surface_mesh) << std::endl;
     std::cout << "Nombres de faces : " << num_faces(m_surface_mesh) << std::endl;
 
 }

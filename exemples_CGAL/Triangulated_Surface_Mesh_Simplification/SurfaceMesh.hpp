@@ -15,16 +15,11 @@
 #include <CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Edge_count_ratio_stop_predicate.h>
 #include <CGAL/boost/graph/generators.h>
 
-/*typedef CGAL::Simple_cartesian<double>               Kernel;
-typedef Kernel::Point_3                              Point_3;
-typedef CGAL::Surface_mesh<Point_3>                  Surface_mesh;
-typedef Surface_mesh::Vertex_index vertex_descriptor;*/
-
-using Kernel = CGAL::Simple_cartesian<double>;
-using Point_3 = Kernel::Point_3;
-using Surface_mesh = CGAL::Surface_mesh<Point_3>;
-using vertex_descriptor = Surface_mesh::Vertex_index;
-using face_descriptor = Surface_mesh::Face_index;
+typedef CGAL::Simple_cartesian<double>          Kernel;
+typedef Kernel::Point_3                         Point_3;
+typedef CGAL::Surface_mesh<Point_3>             Surface_mesh;
+typedef Surface_mesh::Vertex_index              vertex_descriptor;
+typedef Surface_mesh::Face_index                face_descriptor;
 
 class SurfaceMesh{
     public:
