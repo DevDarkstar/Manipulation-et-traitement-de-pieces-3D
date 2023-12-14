@@ -1,10 +1,9 @@
 bl_info = {
-    "name": "Triangulated Surface Mesh Simplification implementation algorithm from CGAL",
+    "name": "Lindstrom-Turk's 'Triangulated Surface Mesh Simplification' implementation algorithm",
     "author": "Richard Leestmans",
     "version": (1, 0),
     "blender": (3, 0, 0),
-    "location": "SpaceBar Search -> Add-on Preferences Example",
-    "description": "Script permettant de simplifier le maillage d'un objet en implémentant l'algorithme 'Triangulated Surface Mesh Simplification' de CGAL",
+    "description": "Script permettant de simplifier le maillage d'un objet en implémentant l'algorithme 'Triangulated Surface Mesh Simplification' de Lindstrom-Turk",
     "warning": "",
     "doc_url": "",
     "tracker_url": "",
@@ -13,7 +12,7 @@ bl_info = {
 
 import bpy
 import bmesh
-import mesh_simplification as ms
+import mesh_simplification
 
 # On récupère tous les objets présents dans la scène
 # objects = bpy.context.scene.objects
@@ -49,6 +48,13 @@ def triangulate_mesh(context, mesh):
             
 
 def simplify_mesh(context, mesh):
+    # On force le maillage à passer en mode objet
+    if(context.mode == 'EDIT_MESH'):
+        bpy.ops.object.editmode_toggle()
+        
+    #On applique l'ensemble des transformations effectuées par l'utilisateur sur le maillage
+    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+    
     # Nous commençons par préparer les données à envoyer au code C++ à savoir la liste des indices des sommets par face et les coordonnées des sommets
     # commençons par les indices des sommets des faces
     faces = [face.vertices for face in mesh.data.polygons]
@@ -56,7 +62,7 @@ def simplify_mesh(context, mesh):
     # et pour les coordonnées des sommets du mesh
     vertices = [vertex.co for vertex in mesh.data.vertices]
     
-    cgal_mesh = ms.SurfaceMesh(faces, vertices, 0.1)
+    cgal_mesh = mesh_simplification.SurfaceMesh(faces, vertices, 0.1)
     try:
         cgal_mesh.triangulated_surface_mesh_simplification()
     except Exception as err:
@@ -74,9 +80,6 @@ def simplify_mesh(context, mesh):
     
     # on récupère le nom du maillage
     name = mesh.data.name
-    
-    if(context.mode == 'EDIT_MESH'):
-        bpy.ops.object.editmode_toggle()
     
     bpy.ops.object.select_all(action='DESELECT')
     mesh.select_set(True)    

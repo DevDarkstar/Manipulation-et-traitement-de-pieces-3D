@@ -22,7 +22,7 @@ SurfaceMesh::SurfaceMesh(std::vector<std::vector<int>> faces, std::vector<std::v
 
     std::cout << "Nombres de sommets : " << num_vertices(m_surface_mesh) << std::endl;
 	std::cout << "Nombres d'arêtes : " << num_edges(m_surface_mesh) << std::endl;
-	std::cout << "Nombres de faces : " << num_faces(m_surface_mesh) << std::endl;
+    std::cout << "Nombres de faces : " << num_faces(m_surface_mesh) << std::endl;
 
 }
 
@@ -46,7 +46,15 @@ void SurfaceMesh::triangulated_surface_mesh_simplification(){
     std::unordered_map<vertex_descriptor, int> remapping = this->getIndicesRemapping();
 
     // Ajouter une propriété aux faces pour stocker les indices des sommets
-    auto indices_property = m_surface_mesh.add_property_map<face_descriptor, std::vector<int>>("v:indices").first;
+    std::pair<Surface_mesh::Property_map<face_descriptor, std::vector<int>>, bool> property = m_surface_mesh.add_property_map<face_descriptor, std::vector<int>>("f:indices");
+
+    Surface_mesh::Property_map<face_descriptor, std::vector<int>> indices_property;
+    //Si la propriété existe déjà
+    if(!property.second){
+        indices_property = m_surface_mesh.property_map<face_descriptor, std::vector<int>>("f:indices").first;
+    }else{
+        indices_property = property.first;
+    }
 
     // Remplir les propriétés avec les indices des sommets pour chaque face
     for (face_descriptor face : m_surface_mesh.faces()) {
@@ -64,7 +72,10 @@ void SurfaceMesh::triangulated_surface_mesh_simplification(){
 void SurfaceMesh::updateVerticesCoordinates(){
     m_vertices.clear();
     //utilisation de propriétés : "location" référence les positions
-    Surface_mesh::Property_map<vertex_descriptor, Kernel::Point_3> location = m_surface_mesh.points();
+    //Première méthode pour récupérer cette propriété
+    //Surface_mesh::Property_map<vertex_descriptor, Kernel::Point_3> location = m_surface_mesh.points();
+    //Seconde méthode pour récupérer cette propriété
+    Surface_mesh::Property_map<vertex_descriptor, Kernel::Point_3> location = m_surface_mesh.property_map<vertex_descriptor, Kernel::Point_3>("v:point").first;
 
     for(vertex_descriptor vd : m_surface_mesh.vertices()) {
         std::vector<double> vertex = {location[vd][0], location[vd][1], location[vd][2]};
@@ -77,10 +88,10 @@ void SurfaceMesh::updateFaceIndices(){
     //auto indices_property = m_surface_mesh.add_property_map<Surface_mesh::Face_index, std::vector<std::size_t>>("v:indices").first;
     m_faces.clear();
 
-    auto indices_property = m_surface_mesh.property_map<face_descriptor, std::vector<int>>("v:indices");
+    Surface_mesh::Property_map<face_descriptor, std::vector<int>> indices_property = m_surface_mesh.property_map<face_descriptor, std::vector<int>>("f:indices").first;
 
     for (face_descriptor face : m_surface_mesh.faces()) {
-        std::vector<int>& indices = indices_property.first[face];
+        std::vector<int>& indices = indices_property[face];
 
         m_faces.push_back(indices);
 
