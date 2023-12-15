@@ -4,8 +4,8 @@ bl_info = {
     "version": (1, 0),
     "blender": (3, 0, 0),
     "description": "Script permettant de simplifier le maillage d'un objet en implémentant l'algorithme 'Triangulated Surface Mesh Simplification' de Lindstrom-Turk",
-    "warning": "",
-    "doc_url": "",
+    "warning": "Cet algorithme ne fonctionne que sur des maillages connexes! Pour vérifier que votre maillage est connexe du point de vue de Blender, vous pouvez passer en mode 'édition', et passez en mode de sélection 'faces'. Puis appuyez sur la touche 'L' tout en ayant le curseur de votre souris sur votre maillage. Si tout le maillage est sélectionné, alors il est considéré comme connexe.",
+    "doc_url": "https://doc.cgal.org/latest/Surface_mesh_simplification/index.html#Chapter_Triangulated_Surface_Mesh_Simplification",
     "tracker_url": "",
     "category": "Mesh",
 }
@@ -69,12 +69,8 @@ def simplify_mesh(context, mesh):
         raise err
     
     cgal_mesh_vertices = cgal_mesh.getVertices()
-    print("coordonnées des sommets :")
-    print(cgal_mesh_vertices)
     
     cgal_mesh_faces = cgal_mesh.getFaceIndices()
-    print("indices des sommets des faces :")
-    print(cgal_mesh_faces)
     
     cgal_mesh_edges = []
     
