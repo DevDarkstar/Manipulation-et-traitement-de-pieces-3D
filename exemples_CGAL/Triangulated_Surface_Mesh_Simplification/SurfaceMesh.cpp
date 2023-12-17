@@ -89,7 +89,7 @@ void SurfaceMesh::updateFaceIndices(){
     Surface_mesh::Property_map<face_descriptor, std::vector<int>> indices_property = m_surface_mesh.property_map<face_descriptor, std::vector<int>>("f:indices").first;
 
     for (face_descriptor face : m_surface_mesh.faces()) {
-        std::vector<int>& indices = indices_property[face];
+        std::vector<int> indices = indices_property[face];
 
         m_faces.push_back(indices);
 
