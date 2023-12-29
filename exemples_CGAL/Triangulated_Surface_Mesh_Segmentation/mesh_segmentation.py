@@ -171,7 +171,7 @@ def register():
 def unregister():
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
-    del bpy.types.Scene.globals
+    del bpy.types.Scene.segmentation_properties
     
 if __name__ == "__main__":
     register()
