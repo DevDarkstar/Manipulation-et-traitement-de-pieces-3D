@@ -131,14 +131,16 @@ class VIEW3D_PT_mesh_simplification_panel(bpy.types.Panel):
         row.operator("view3d.mesh_simplification", text="Simplifier le maillage")
 
 
+classes = (VIEW3D_PT_mesh_simplification_panel, VIEW3D_OT_mesh_simplification)
+
 def register():
-    bpy.utils.register_class(VIEW3D_PT_mesh_simplification_panel)
-    bpy.utils.register_class(VIEW3D_OT_mesh_simplification)
+    for cls in classes:
+        bpy.utils.register_class(cls)
 
 
 def unregister():
-    bpy.utils.unregister_class(VIEW3D_PT_mesh_simplification_panel)
-    bpy.utils.unregister_class(VIEW3D_OT_mesh_simplification)
+    for cls in reversed(classes):
+        bpy.utils.unregister_class(cls)
 
 
 if __name__ == "__main__":

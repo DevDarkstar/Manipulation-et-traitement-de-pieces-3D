@@ -169,9 +169,9 @@ def register():
     bpy.types.Scene.segmentation_properties = bpy.props.PointerProperty(type=SegmentationProperties)
     
 def unregister():
+    del bpy.types.Scene.segmentation_properties
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
-    del bpy.types.Scene.segmentation_properties
     
 if __name__ == "__main__":
     register()
