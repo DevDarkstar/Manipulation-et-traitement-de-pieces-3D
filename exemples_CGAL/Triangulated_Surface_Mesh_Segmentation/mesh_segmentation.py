@@ -158,7 +158,7 @@ class VIEW3D_PT_segmentation_panel(bpy.types.Panel):
 
 
 # tuple contenant les classes à enregistrer et désinscrire dans Blender
-classes = (SegmentationProperties, VIEW3D_OT_segmentation_button, VIEW3D_PT_segmentation_panel)
+classes = (VIEW3D_PT_segmentation_panel, VIEW3D_OT_segmentation_button, SegmentationProperties)
         
 
 def register():
