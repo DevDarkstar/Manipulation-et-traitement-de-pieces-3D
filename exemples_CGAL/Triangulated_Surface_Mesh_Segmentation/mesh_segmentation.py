@@ -165,7 +165,7 @@ def register():
     for cls in classes:
         bpy.utils.register_class(cls)
     # ajout de la strcture de données de propriétés à la classe Scene de bpy.types via un pointeur de propriété appelé ici segmentation_properties
-    # Cela permet d'utiliser une instance de Globals dans l'ensemble des classes du script (via bpy.context.scene.segmentation_properties)
+    # Cela permet d'utiliser une instance de SegmentationProperties dans l'ensemble des classes du script (via bpy.context.scene.segmentation_properties)
     bpy.types.Scene.segmentation_properties = bpy.props.PointerProperty(type=SegmentationProperties)
     
 def unregister():

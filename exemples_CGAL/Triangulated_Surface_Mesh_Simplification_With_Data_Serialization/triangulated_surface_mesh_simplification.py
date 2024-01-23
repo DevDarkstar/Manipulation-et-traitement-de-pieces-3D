@@ -45,6 +45,18 @@ def triangulate_mesh(context, mesh):
         # sinon nous nous trouvons en mode 'Edition'
         else:
             bmesh.update_edit_mesh(mesh.data)
+
+# classe contenant les propriétés utilisées dans l'algorithme de simplification du maillage
+class SimplificationProperties(bpy.types.PropertyGroup):
+    # propriété sur le facteur de décimation du maillage (valeur comprise entre 0 et 1)
+    decimation_factor: bpy.props.FloatProperty(
+        name="facteur décimation",
+        description="Facteur de décimation du maillage",
+        default=0.5,  # Valeur par défaut
+        min=0.0,  # Valeur minimale
+        max=1.0,  # Valeur maximale
+        step=5,  # Incrémentation pour le curseur (une valeur 'step' de 5 pour une FloatProperty indique un pas de 0.05)
+    )
             
 
 def simplify_mesh(context, mesh):
@@ -52,8 +64,10 @@ def simplify_mesh(context, mesh):
     if(context.mode == 'EDIT_MESH'):
         bpy.ops.object.editmode_toggle()
         
-    #On applique l'ensemble des transformations effectuées par l'utilisateur sur le maillage
-    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+    #Nous récupérons toutes les transformations du maillage (translation, rotation, mise à l'échelle)
+    translation = mesh.location
+    rotation = mesh.rotation_euler
+    scale = mesh.scale
     
     # Nous commençons par préparer les données à envoyer au code C++ à savoir la liste des indices des sommets par face et les coordonnées des sommets ainsi que le facteur de décimation de l'algorithme
     # Nous créons pour cela une structure de données sous la forme d'un dictionnaire python
@@ -64,8 +78,11 @@ def simplify_mesh(context, mesh):
     # et pour les coordonnées des sommets du mesh
     data["vertices"] = [vertex.co for vertex in mesh.data.vertices]
 
-    # ainsi que pour le facteur de décimation
-    data["decimation_factor"] = 0.1
+    # Récupération du facteur de décimation contenu dans l'instance de la propriété associée à la scène de Blender
+    property = context.scene.simplification_properties
+
+    # et stockage du facteur de décimation dans le dictionnaire
+    data["decimation_factor"] = property.decimation_factor
     
     cgal_mesh = SurfaceMesh(data)
     try:
@@ -95,6 +112,11 @@ def simplify_mesh(context, mesh):
     
     # Créer un objet associé au maillage
     obj = bpy.data.objects.new(name, new_mesh)
+
+    # Application de l'ensemble des transformations de l'ancien maillage sur le nouveau
+    obj.location = translation
+    obj.rotation_euler = rotation
+    obj.scale = scale
 
     # Ajouter l'objet à la scène
     bpy.context.scene.collection.objects.link(obj)
@@ -127,15 +149,23 @@ class VIEW3D_PT_mesh_simplification_panel(bpy.types.Panel):
 
     def draw(self, context):
         """define the layout of the panel"""
+        # Récupération de l'instance de SimplificationProperties associée à une instance de la classe Scene de Blender
+        property = context.scene.simplification_properties
+        # Création du contenu de l'onglet de l'extension
+        box = self.layout.box()
+        box.prop(property, "decimation_factor")
         row = self.layout.row()
         row.operator("view3d.mesh_simplification", text="Simplifier le maillage")
 
 
-classes = (VIEW3D_PT_mesh_simplification_panel, VIEW3D_OT_mesh_simplification)
+classes = (VIEW3D_PT_mesh_simplification_panel, VIEW3D_OT_mesh_simplification, SimplificationProperties)
 
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)
+    # ajout de la strcture de données de propriétés à la classe Scene de bpy.types via un pointeur de propriété appelé ici simplification_properties
+    # Cela permet d'utiliser une instance de SimplificationProperties dans l'ensemble des classes du script (via bpy.context.scene.simplification_properties)
+    bpy.types.Scene.simplification_properties = bpy.props.PointerProperty(type=SimplificationProperties)
 
 
 def unregister():
