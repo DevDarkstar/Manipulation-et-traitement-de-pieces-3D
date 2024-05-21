@@ -15,7 +15,7 @@ SurfaceMeshSegmentation::SurfaceMeshSegmentation(py::dict data) : m_surface_mesh
     vertices_descriptor.reserve(vertices.size() / 3);
 
     for(int i = 0; i < vertices.size(); i+=3){
-        const vertex_descriptor& v = m_surface_mesh.add_vertex(Point_3(vertices[i], vertices[i+1], vertices[i+2]));
+        vertex_descriptor v = m_surface_mesh.add_vertex(Point_3(vertices[i], vertices[i+1], vertices[i+2]));
         vertices_descriptor.push_back(v);
     }
 

@@ -91,7 +91,7 @@ def mesh_segmentation(context, object):
     nb_materials = len(mesh.materials)
 
     # Création des matériaux en fonction du nombre de segments
-    for i in range(nb_segments):
+    for _ in range(nb_segments):
         # Création d'une couleur aléatoire
         red = random.random()
         green = random.random()
