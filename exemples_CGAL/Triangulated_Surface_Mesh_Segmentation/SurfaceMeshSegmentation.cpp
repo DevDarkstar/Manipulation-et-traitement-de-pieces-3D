@@ -61,7 +61,7 @@ void SurfaceMeshSegmentation::triangulated_surface_mesh_segmentation(){
 
 void SurfaceMeshSegmentation::updateSegmentsIds(){
     //Récupération de la property_map contenant les identifiants des segments obtenus
-    const auto segment_property_map = m_surface_mesh.property_map<face_descriptor, std::size_t>("f:sid").first;
+    const auto& segment_property_map = m_surface_mesh.property_map<face_descriptor, std::size_t>("f:sid").first;
     std::vector<size_t> segments_ids;
     segments_ids.reserve(num_faces(m_surface_mesh));
 

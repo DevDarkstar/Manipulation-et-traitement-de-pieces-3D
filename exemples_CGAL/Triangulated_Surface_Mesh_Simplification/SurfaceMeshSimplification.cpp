@@ -98,7 +98,7 @@ void SurfaceMeshSimplification::update_face_indices(){
     const auto& indices_property = m_surface_mesh.property_map<face_descriptor, std::vector<int>>("f:indices").first;
 
     for(const auto& face : m_surface_mesh.faces()) {
-        const std::vector<int> indices = indices_property[face];
+        const std::vector<int>& indices = indices_property[face];
         std::copy(indices.begin(), indices.end(), std::back_inserter(face_indices));
     }
     //Ajout du tableau dans la structure de données qui sera retournée à Blender
@@ -115,7 +115,7 @@ std::unordered_map<vertex_descriptor, int> SurfaceMeshSimplification::get_indice
     // Pour ré-indexer le maillage, nous allons parcourir l'ensemble des sommets du maillage
     // et associer pour chacun d'entre eux un indice qui ira de 0 au nombre de sommets du maillage - 1
     int new_index = 0;
-    for (const auto vertex : m_surface_mesh.vertices()) {
+    for (const auto& vertex : m_surface_mesh.vertices()) {
         remapping[vertex] = new_index++;
     }
 
